@@ -1,12 +1,16 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 public class File {
-    public HashMap<String, String> readFile() throws IOException {
+    public HashMap<String, List <String>> readFile() throws IOException {
         FileInputStream fileInputStream = null;
         BufferedReader reader = null;
-        HashMap<String, String> sw = new HashMap<String, String>();
+        HashMap<String, List <String>> sw = new HashMap<String, List <String>>();
+
 
         try {
             fileInputStream = new FileInputStream("slang.txt");
@@ -14,12 +18,21 @@ public class File {
 
             String line = reader.readLine();
             String key = "";
-            String value = "";
+            List <String> value = new ArrayList<>();
             while (line != null) {
-                line = reader.readLine();
                 key = line.substring(0, line.indexOf('`'));
-                value = line.substring(line.indexOf('`') + 1, line.length());
-                sw.put(key, value);
+                value = Arrays.asList(line.substring(line.indexOf('`') + 1, line.length()).split("\\| "));
+                line = reader.readLine();
+
+                if(line.indexOf('`') == -1){
+                    // xử lý đẻ add vào
+                    //System.out.println(line);
+                    line = reader.readLine();
+
+                }
+                else {
+                    sw.put(key, value);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
