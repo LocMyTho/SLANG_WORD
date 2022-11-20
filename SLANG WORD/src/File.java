@@ -3,13 +3,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 public class File {
-    public HashMap<String, List <String>> readFile() throws IOException {
+    public HashMap<String, List<String>> readFile() throws IOException {
         FileInputStream fileInputStream = null;
         BufferedReader reader = null;
-        HashMap<String, List <String>> sw = new HashMap<String, List <String>>();
+        HashMap<String, List<String>> sw = new HashMap<String, List<String>>();
 
 
         try {
@@ -18,19 +17,16 @@ public class File {
 
             String line = reader.readLine();
             String key = "";
-            List <String> value = new ArrayList<>();
+            List<String> value = new ArrayList<>();
             while (line != null) {
                 key = line.substring(0, line.indexOf('`'));
                 value = Arrays.asList(line.substring(line.indexOf('`') + 1, line.length()).split("\\| "));
                 line = reader.readLine();
 
-                if(line.indexOf('`') == -1){
-                    // xử lý đẻ add vào
-                    //System.out.println(line);
+                if (line.indexOf('`') == -1) {
+                    value.add(line);
                     line = reader.readLine();
-
-                }
-                else {
+                } else {
                     sw.put(key, value);
                 }
             }
