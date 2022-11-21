@@ -4,8 +4,9 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        new View();
-
+        View view = new View();
+//        view.SearchBySlangWord();
+//        view.SearchByDefinition();
 
 //        slangWord sw = new slangWord();
 //        List <String> x = sw.SearchBySlangWord(">.<");

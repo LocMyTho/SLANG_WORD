@@ -1,3 +1,5 @@
+import com.sun.java.accessibility.util.EventID;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -6,12 +8,12 @@ public class View extends JFrame {
         this.setTitle("Slang word");
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        this.setVisible(true);
 
-        //header
-        JPanel jPanel_header = new JPanel();
-        jPanel_header.setLayout(new GridLayout(2, 5));
+        JPanel jPanel_menu = new JPanel();
+        jPanel_menu.setLayout(new BorderLayout());
+
+        JPanel jPanel_menu_center = new JPanel();
+        jPanel_menu_center.setLayout(new GridLayout(5, 2));
 
         JButton btnSearchBySlangWord = new JButton("Search By SlangWord");
         JButton btnSearchByDefinition = new JButton("Search By Definition");
@@ -24,38 +26,156 @@ public class View extends JFrame {
         JButton btnQuestionSlangWord = new JButton("Question SlangWord");
         JButton btnQuestionDefinition = new JButton("Question Definition");
 
-        jPanel_header.add(btnSearchBySlangWord);
-        jPanel_header.add(btnSearchByDefinition);
-        jPanel_header.add(btnHistory);
-        jPanel_header.add(btnAddNewSlangWord);
-        jPanel_header.add(btnEditSlangWord);
-        jPanel_header.add(btnDeleteSlangWord);
-        jPanel_header.add(btnResetSlangWordList);
-        jPanel_header.add(btnRandomSlangWord);
-        jPanel_header.add(btnQuestionSlangWord);
-        jPanel_header.add(btnQuestionDefinition);
+        jPanel_menu_center.add(btnSearchBySlangWord);
+        jPanel_menu_center.add(btnSearchByDefinition);
+        jPanel_menu_center.add(btnHistory);
+        jPanel_menu_center.add(btnAddNewSlangWord);
+        jPanel_menu_center.add(btnEditSlangWord);
+        jPanel_menu_center.add(btnDeleteSlangWord);
+        jPanel_menu_center.add(btnResetSlangWordList);
+        jPanel_menu_center.add(btnRandomSlangWord);
+        jPanel_menu_center.add(btnQuestionSlangWord);
+        jPanel_menu_center.add(btnQuestionDefinition);
 
-        //footer
-        JPanel jPanel_footer = new JPanel();
+        jPanel_menu.add(jPanel_menu_center, BorderLayout.CENTER);
 
-        JButton btnOK = new JButton("OK");
+        Label label_slangword = new Label("SLANG WORD", Label.CENTER);
+        label_slangword.setFont(new Font("Serif", Font.PLAIN, 50));
 
-        jPanel_footer.setLayout(new FlowLayout());
-        jPanel_footer.add(btnOK);
 
-        //center
+        jPanel_menu.add(label_slangword, BorderLayout.NORTH);
+
+        this.setContentPane(jPanel_menu);
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
+
+    public void SearchBySlangWord() {
+        JPanel jPanel_SearchBySlangWord = new JPanel();
+        jPanel_SearchBySlangWord.setLayout(new BorderLayout());
+
+        JPanel jPanel_north = new JPanel();
+
+        JLabel label_SearchBySlangWord = new JLabel("Search By Slang Word", JLabel.CENTER);
+        jPanel_north.add(label_SearchBySlangWord);
+        jPanel_north.setSize(300, 300);
+        jPanel_SearchBySlangWord.add(jPanel_north, BorderLayout.NORTH);
+
+        JPanel jPanel_center = new JPanel();
+        jPanel_center.setLayout(new BorderLayout());
+
+        JLabel label_slangword = new JLabel("Slang word");
+        JTextField text_slangword = new JTextField();
+
+        jPanel_center.add(label_slangword, BorderLayout.NORTH);
+        jPanel_center.add(text_slangword, BorderLayout.NORTH);
+
+        JTextArea x = new JTextArea();
+        jPanel_center.add(x, BorderLayout.CENTER);
+
+        JPanel jPanel_south = new JPanel();
+        jPanel_south.setLayout(new FlowLayout());
+
+        JButton btnBack = new JButton("BACK");
+        btnBack.setSize(100, 300);
+
+        jPanel_south.add(btnBack);
+        jPanel_SearchBySlangWord.add(jPanel_south, BorderLayout.SOUTH);
+
+        jPanel_SearchBySlangWord.add(jPanel_center, BorderLayout.CENTER);
+
+        this.setContentPane(jPanel_SearchBySlangWord);
+    }
+
+    public void SearchByDefinition() {
+        JPanel jPanel_SearchByDefinition = new JPanel();
+        jPanel_SearchByDefinition.setLayout(new BorderLayout());
+
+        JPanel jPanel_north = new JPanel();
+
+        JLabel label_SearchByDefinition = new JLabel("Search By Definition", JLabel.CENTER);
+        jPanel_north.add(label_SearchByDefinition);
+        jPanel_north.setSize(300, 300);
+        jPanel_SearchByDefinition.add(jPanel_north, BorderLayout.NORTH);
+
+        JPanel jPanel_center = new JPanel();
+        jPanel_center.setLayout(new BorderLayout());
+
+        JLabel label_definition = new JLabel("Definition");
+        JTextField text_definition = new JTextField();
+
+        jPanel_center.add(label_definition, BorderLayout.NORTH);
+        jPanel_center.add(text_definition, BorderLayout.NORTH);
+
+        JTextArea x = new JTextArea();
+        jPanel_center.add(x, BorderLayout.CENTER);
+
+        JPanel jPanel_south = new JPanel();
+        jPanel_south.setLayout(new FlowLayout());
+
+        JButton btnBack = new JButton("BACK");
+        btnBack.setSize(100, 300);
+
+        jPanel_south.add(btnBack);
+        jPanel_SearchByDefinition.add(jPanel_south, BorderLayout.SOUTH);
+
+        jPanel_SearchByDefinition.add(jPanel_center, BorderLayout.CENTER);
+
+        this.setContentPane(jPanel_SearchByDefinition);
+    }
+
+    public void History() {
+        JPanel jPanel_history = new JPanel();
+        jPanel_history.setLayout(new BorderLayout());
+
+        JPanel jPanel_north = new JPanel();
+
+        JLabel label_History = new JLabel("History", JLabel.CENTER);
+        jPanel_north.add(label_History);
+        jPanel_north.setSize(300, 300);
+        jPanel_history.add(jPanel_north, BorderLayout.NORTH);
+
         JPanel jPanel_center = new JPanel();
 
-        JLabel label = new JLabel("haha", JLabel.CENTER);
 
-        jPanel_center.setLayout(new GridLayout());
-        jPanel_center.add(label);
+        JPanel jPanel_south = new JPanel();
+        jPanel_south.setLayout(new FlowLayout());
+
+        JButton btnBack = new JButton("BACK");
+        btnBack.setSize(100, 300);
+
+        jPanel_south.add(btnBack);
+        jPanel_history.add(jPanel_south,BorderLayout.SOUTH);
 
 
-        this.setLayout(new BorderLayout());
-        this.add(jPanel_header, BorderLayout.NORTH);
-        this.add(jPanel_footer, BorderLayout.SOUTH);
-        this.add(jPanel_center, BorderLayout.CENTER);
+        this.setContentPane(jPanel_history);
+
+    }
+
+    public void AddNewSlangWord(){
+        JPanel jPanel_addNewSlangWord = new JPanel();
+        jPanel_addNewSlangWord.setLayout(new BorderLayout());
+
+        JPanel jPanel_north = new JPanel();
+
+        JLabel label_addNewSlangWord = new JLabel("Add New Slang Word", JLabel.CENTER);
+        jPanel_north.add(label_addNewSlangWord);
+        jPanel_north.setSize(300, 300);
+        jPanel_addNewSlangWord.add(jPanel_north, BorderLayout.NORTH);
+
+        JPanel jPanel_center = new JPanel();
+
+
+        JPanel jPanel_south = new JPanel();
+        jPanel_south.setLayout(new FlowLayout());
+
+        JButton btnBack = new JButton("BACK");
+        btnBack.setSize(100, 300);
+
+        jPanel_south.add(btnBack);
+        jPanel_addNewSlangWord.add(jPanel_south,BorderLayout.SOUTH);
+
+        this.setContentPane(jPanel_addNewSlangWord);
     }
 
 
