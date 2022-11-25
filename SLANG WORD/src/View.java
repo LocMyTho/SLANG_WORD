@@ -1,14 +1,32 @@
-import com.sun.java.accessibility.util.EventID;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.*;
 
-public class View extends JFrame implements ActionListener {
+
+public class View extends JFrame {
+
+    private ActionListener ac = new Controller(this);
+    private JButton btnSearchBySlangWord;
+    private JButton btnSearchByDefinition;
+    private JButton btnHistory;
+    private JButton btnAddNewSlangWord;
+    private JButton btnEditSlangWord;
+    private JButton btnDeleteSlangWord;
+    private JButton btnResetSlangWordList;
+    private JButton btnRandomSlangWord;
+    private JButton btnQuestionSlangWord;
+    private JButton btnQuestionDefinition;
+    private JTextField text_slangword;
+    private JButton btn_searchBySlangword;
+    private DefaultTableModel model;
+    private JTable table;
+    private JButton btnBack;
+    private JTextField text_definition;
+    private JButton btnAdd;
+    private JButton btnEdit;
+    private JButton btnDelete;
+    private JButton btnRandom;
 
 
     public View() {
@@ -16,6 +34,13 @@ public class View extends JFrame implements ActionListener {
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
 
+        this.Menu();
+
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        this.setVisible(true);
+    }
+
+    public void Menu() {
 
         JPanel jPanel_menu = new JPanel();
         jPanel_menu.setLayout(new BorderLayout());
@@ -23,25 +48,24 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_menu_center = new JPanel();
         jPanel_menu_center.setLayout(new GridLayout(5, 2, 30, 30));
 
-
-        JButton btnSearchBySlangWord = new JButton("Search By SlangWord");
-        btnSearchBySlangWord.addActionListener(this);
-        JButton btnSearchByDefinition = new JButton("Search By Definition");
-        btnSearchByDefinition.addActionListener(this);
-        JButton btnHistory = new JButton("History");
-        btnHistory.addActionListener(this);
-        JButton btnAddNewSlangWord = new JButton("Add New SlangWord");
-        btnAddNewSlangWord.addActionListener(this);
-        JButton btnEditSlangWord = new JButton("Edit SlangWord");
-        btnEditSlangWord.addActionListener(this);
-        JButton btnDeleteSlangWord = new JButton("Delete SlangWord");
-        btnDeleteSlangWord.addActionListener(this);
-        JButton btnResetSlangWordList = new JButton("Reset SlangWord List");
-        btnResetSlangWordList.addActionListener(this);
-        JButton btnRandomSlangWord = new JButton("Random SlangWord");
-        btnRandomSlangWord.addActionListener(this);
-        JButton btnQuestionSlangWord = new JButton("Question SlangWord");
-        JButton btnQuestionDefinition = new JButton("Question Definition");
+        btnSearchBySlangWord = new JButton("Search By SlangWord");
+        btnSearchBySlangWord.addActionListener(ac);
+        btnSearchByDefinition = new JButton("Search By Definition");
+        btnSearchByDefinition.addActionListener(ac);
+        btnHistory = new JButton("History");
+        btnHistory.addActionListener(ac);
+        btnAddNewSlangWord = new JButton("Add New SlangWord");
+        btnAddNewSlangWord.addActionListener(ac);
+        btnEditSlangWord = new JButton("Edit SlangWord");
+        btnEditSlangWord.addActionListener(ac);
+        btnDeleteSlangWord = new JButton("Delete SlangWord");
+        btnDeleteSlangWord.addActionListener(ac);
+        btnResetSlangWordList = new JButton("Reset SlangWord List");
+        btnResetSlangWordList.addActionListener(ac);
+        btnRandomSlangWord = new JButton("Random SlangWord");
+        btnRandomSlangWord.addActionListener(ac);
+        btnQuestionSlangWord = new JButton("Question SlangWord");
+        btnQuestionDefinition = new JButton("Question Definition");
 
         jPanel_menu_center.add(btnSearchBySlangWord);
         jPanel_menu_center.add(btnSearchByDefinition);
@@ -63,11 +87,9 @@ public class View extends JFrame implements ActionListener {
         Label label_slangword = new Label("SLANG WORD", Label.CENTER);
         label_slangword.setFont(new Font("Serif", Font.PLAIN, 50));
 
-
         jPanel_menu.add(label_slangword, BorderLayout.NORTH);
 
         this.setContentPane(jPanel_menu);
-        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
@@ -88,8 +110,8 @@ public class View extends JFrame implements ActionListener {
         jPanel_center_north.setLayout(new FlowLayout());
 
         JLabel label_slangword = new JLabel("Slang word");
-        JTextField text_slangword = new JTextField(50);
-        JButton btn_searchBySlangword = new JButton("Search");
+        text_slangword = new JTextField(50);
+        btn_searchBySlangword = new JButton("Search");
 
         jPanel_center_north.add(label_slangword);
         jPanel_center_north.add(text_slangword);
@@ -100,8 +122,8 @@ public class View extends JFrame implements ActionListener {
         String[][] data = null;
         String column[] = {"Slang word", "Definition"};
 
-        DefaultTableModel model = new DefaultTableModel(data, column);
-        JTable table = new JTable(model);
+        model = new DefaultTableModel(data, column);
+        table = new JTable(model);
 
         jPanel_center.add(new JScrollPane(table), BorderLayout.CENTER);
 
@@ -109,7 +131,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
         jPanel_south.add(btnBack);
         jPanel_SearchBySlangWord.add(jPanel_south, BorderLayout.SOUTH);
@@ -137,7 +160,7 @@ public class View extends JFrame implements ActionListener {
         jPanel_center_north.setLayout(new FlowLayout());
 
         JLabel label_definition = new JLabel("Definition");
-        JTextField text_definition = new JTextField(50);
+        text_definition = new JTextField(50);
 
         jPanel_center_north.add(label_definition);
         jPanel_center_north.add(text_definition);
@@ -147,16 +170,16 @@ public class View extends JFrame implements ActionListener {
         String[][] data = null;
         String column[] = {"Slang word", "Definition"};
 
-        DefaultTableModel model = new DefaultTableModel(data, column);
-        JTable table = new JTable(model);
+        model = new DefaultTableModel(data, column);
+        table = new JTable(model);
 
         jPanel_center.add(new JScrollPane(table), BorderLayout.CENTER);
 
 
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
-
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
         jPanel_south.add(btnBack);
         jPanel_SearchByDefinition.add(jPanel_south, BorderLayout.SOUTH);
@@ -182,8 +205,8 @@ public class View extends JFrame implements ActionListener {
         String[][] data = null;
         String column[] = {"Slang word", "Definition"};
 
-        DefaultTableModel model = new DefaultTableModel(data, column);
-        JTable table = new JTable(model);
+        model = new DefaultTableModel(data, column);
+        table = new JTable(model);
 
         jPanel_center.add(new JScrollPane(table), BorderLayout.CENTER);
         jPanel_history.add(jPanel_center, BorderLayout.CENTER);
@@ -192,7 +215,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
         jPanel_south.add(btnBack);
         jPanel_history.add(jPanel_south, BorderLayout.SOUTH);
@@ -220,21 +244,22 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_center_sw = new JPanel();
         jPanel_center_sw.setLayout(new FlowLayout());
         JLabel label_sw = new JLabel("Slangword");
-        JTextField text_sw = new JTextField(50);
+        text_slangword = new JTextField(50);
         jPanel_center_sw.add(label_sw);
-        jPanel_center_sw.add(text_sw);
+        jPanel_center_sw.add(text_slangword);
 
         JPanel jPanel_center_definition = new JPanel();
         jPanel_center_definition.setLayout(new FlowLayout());
         JLabel label_definition = new JLabel("Definition");
-        JTextField text_definition = new JTextField(50);
+        text_definition = new JTextField(50);
         jPanel_center_definition.add(label_definition);
         jPanel_center_definition.add(text_definition);
 
         JPanel jPanel_center_btn = new JPanel();
         jPanel_center_btn.setLayout(new FlowLayout());
-        JButton btnAdd = new JButton("Add");
+        btnAdd = new JButton("Add");
         jPanel_center_btn.add(btnAdd);
+
 
         jPanel_center.add(jPanel_center_sw);
         jPanel_center.add(jPanel_center_definition);
@@ -245,7 +270,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
 
         jPanel_south.add(btnBack);
@@ -272,20 +298,20 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_center_sw = new JPanel();
         jPanel_center_sw.setLayout(new FlowLayout());
         JLabel label_sw = new JLabel("Slangword");
-        JTextField text_sw = new JTextField(50);
+        text_slangword = new JTextField(50);
         jPanel_center_sw.add(label_sw);
-        jPanel_center_sw.add(text_sw);
+        jPanel_center_sw.add(text_slangword);
 
         JPanel jPanel_center_definition = new JPanel();
         jPanel_center_definition.setLayout(new FlowLayout());
         JLabel label_definition = new JLabel("Definition");
-        JTextField text_definition = new JTextField(50);
+        text_definition = new JTextField(50);
         jPanel_center_definition.add(label_definition);
         jPanel_center_definition.add(text_definition);
 
         JPanel jPanel_center_btn = new JPanel();
         jPanel_center_btn.setLayout(new FlowLayout());
-        JButton btnEdit = new JButton("Edit");
+        btnEdit = new JButton("Edit");
         jPanel_center_btn.add(btnEdit);
 
         jPanel_center.add(jPanel_center_sw);
@@ -297,7 +323,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
 
         jPanel_south.add(btnBack);
@@ -324,13 +351,13 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_center_sw = new JPanel();
         jPanel_center_sw.setLayout(new FlowLayout());
         JLabel label_sw = new JLabel("Slangword");
-        JTextField text_sw = new JTextField(50);
+        text_slangword = new JTextField(50);
         jPanel_center_sw.add(label_sw);
-        jPanel_center_sw.add(text_sw);
+        jPanel_center_sw.add(text_slangword);
 
         JPanel jPanel_center_btn = new JPanel();
         jPanel_center_btn.setLayout(new FlowLayout());
-        JButton btnDelete = new JButton("Delete");
+        btnDelete = new JButton("Delete");
         jPanel_center_btn.add(btnDelete);
 
         jPanel_center.add(jPanel_center_sw);
@@ -340,7 +367,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
         jPanel_south.add(btnBack);
         jPanel_deleteSlangWord.add(jPanel_south, BorderLayout.SOUTH);
@@ -355,7 +383,7 @@ public class View extends JFrame implements ActionListener {
 
         JPanel jPanel_north = new JPanel();
 
-        JLabel label_randomSlangWord = new JLabel("Delete Slang Word", JLabel.CENTER);
+        JLabel label_randomSlangWord = new JLabel("Random Slang Word", JLabel.CENTER);
         jPanel_north.add(label_randomSlangWord);
 
         jPanel_randomSlangWord.add(jPanel_north, BorderLayout.NORTH);
@@ -366,21 +394,21 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_center_sw = new JPanel();
         jPanel_center_sw.setLayout(new FlowLayout());
         JLabel label_sw = new JLabel("Slangword");
-        JTextField text_sw = new JTextField(50);
+        text_slangword = new JTextField(50);
         jPanel_center_sw.add(label_sw);
-        jPanel_center_sw.add(text_sw);
-
-        JPanel jPanel_center_btn = new JPanel();
-        jPanel_center_btn.setLayout(new FlowLayout());
-        JButton btnRandom = new JButton("Random");
-        jPanel_center_btn.add(btnRandom);
+        jPanel_center_sw.add(text_slangword);
 
         JPanel jPanel_center_definition = new JPanel();
         jPanel_center_definition.setLayout(new FlowLayout());
         JLabel label_definition = new JLabel("Definition");
-        JTextField text_definition = new JTextField(50);
+        text_definition = new JTextField(50);
         jPanel_center_definition.add(label_definition);
         jPanel_center_definition.add(text_definition);
+
+        JPanel jPanel_center_btn = new JPanel();
+        jPanel_center_btn.setLayout(new FlowLayout());
+        btnRandom = new JButton("Random");
+        jPanel_center_btn.add(btnRandom);
 
         jPanel_center.add(jPanel_center_sw);
         jPanel_center.add(jPanel_center_definition);
@@ -390,7 +418,8 @@ public class View extends JFrame implements ActionListener {
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
 
-        JButton btnBack = new JButton("BACK");
+        btnBack = new JButton("BACK");
+        btnBack.addActionListener(ac);
 
         jPanel_south.add(btnBack);
         jPanel_randomSlangWord.add(jPanel_south, BorderLayout.SOUTH);
@@ -399,43 +428,5 @@ public class View extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().compareTo("Search By SlangWord") == 0) {
-            this.SearchBySlangWord();
-        } else if (e.getActionCommand().compareTo("Search By Definition") == 0) {
-            this.SearchByDefinition();
-        } else if (e.getActionCommand().compareTo("History") == 0) {
-            this.History();
-        } else if (e.getActionCommand().compareTo("Add New SlangWord") == 0) {
-            this.AddNewSlangWord();
-            Object[] options = {"Confirm", "No"};
-            int n = JOptionPane.showOptionDialog(this,
-                    "Do you want to add this slang word",
-                    "Add new slang word",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[1]);
-        } else if (e.getActionCommand().compareTo("Edit SlangWord") == 0) {
-            this.EditSlangWord();
-        } else if (e.getActionCommand().compareTo("Delete SlangWord") == 0) {
-            this.DeleteSlangWord();
-        }else if (e.getActionCommand().compareTo("Reset SlangWord List") == 0) {
-            Object[] options = {"Yes", "No"};
-            int n = JOptionPane.showOptionDialog(this,
-                    "Do you want to reset slang word list",
-                    "Reset slang word list",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    options,
-                    options[1]);
-        }
-        else if (e.getActionCommand().compareTo("Random SlangWord") == 0) {
-            this.RandomSlangWord();
-        }
-    }
 }
 
