@@ -2,34 +2,37 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.HashMap;
 
 
 public class View extends JFrame {
 
     private ActionListener ac = new Controller(this);
-    private JButton btnSearchBySlangWord;
-    private JButton btnSearchByDefinition;
-    private JButton btnHistory;
-    private JButton btnAddNewSlangWord;
-    private JButton btnEditSlangWord;
-    private JButton btnDeleteSlangWord;
-    private JButton btnResetSlangWordList;
-    private JButton btnRandomSlangWord;
-    private JButton btnQuestionSlangWord;
-    private JButton btnQuestionDefinition;
-    private JTextField text_slangword;
-    private JButton btn_searchBySlangword;
-    private DefaultTableModel model;
-    private JTable table;
-    private JButton btnBack;
-    private JTextField text_definition;
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDelete;
-    private JButton btnRandom;
+    public JButton btnSearchBySlangWord;
+    public JButton btnSearchByDefinition;
+    public JButton btnHistory;
+    public JButton btnAddNewSlangWord;
+    public JButton btnEditSlangWord;
+    public JButton btnDeleteSlangWord;
+    public JButton btnResetSlangWordList;
+    public JButton btnRandomSlangWord;
+    public JButton btnQuestionSlangWord;
+    public JButton btnQuestionDefinition;
+    public JTextField text_slangword;
+    public JButton btn_searchBySlangword;
+    public JButton btn_searchByDefinition;
+    public DefaultTableModel model;
+    public JTable table;
+    public JButton btnBack;
+    public JTextField text_definition;
+    public JButton btnAdd;
+    public JButton btnEdit;
+    public JButton btnDelete;
+    public JButton btnRandom;
 
 
-    public View() {
+    public View() throws IOException {
         this.setTitle("Slang word");
         this.setSize(800, 600);
         this.setLocationRelativeTo(null);
@@ -112,6 +115,7 @@ public class View extends JFrame {
         JLabel label_slangword = new JLabel("Slang word");
         text_slangword = new JTextField(50);
         btn_searchBySlangword = new JButton("Search");
+        btn_searchBySlangword.addActionListener(ac);
 
         jPanel_center_north.add(label_slangword);
         jPanel_center_north.add(text_slangword);
@@ -161,9 +165,12 @@ public class View extends JFrame {
 
         JLabel label_definition = new JLabel("Definition");
         text_definition = new JTextField(50);
+        btn_searchByDefinition = new JButton("Search");
+        btn_searchByDefinition.addActionListener(ac);
 
         jPanel_center_north.add(label_definition);
         jPanel_center_north.add(text_definition);
+        jPanel_center_north.add(btn_searchByDefinition);
 
         jPanel_center.add(jPanel_center_north, BorderLayout.NORTH);
 
@@ -210,7 +217,6 @@ public class View extends JFrame {
 
         jPanel_center.add(new JScrollPane(table), BorderLayout.CENTER);
         jPanel_history.add(jPanel_center, BorderLayout.CENTER);
-
 
         JPanel jPanel_south = new JPanel();
         jPanel_south.setLayout(new FlowLayout());
@@ -259,6 +265,7 @@ public class View extends JFrame {
         jPanel_center_btn.setLayout(new FlowLayout());
         btnAdd = new JButton("Add");
         jPanel_center_btn.add(btnAdd);
+        btnAdd.addActionListener(ac);
 
 
         jPanel_center.add(jPanel_center_sw);
