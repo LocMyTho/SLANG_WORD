@@ -41,35 +41,47 @@ public class slangWord {
         return file.readFile("history.txt");
     }
 
+    public void SaveHistory(String slangword,List<String> ListDefinition) throws IOException {
+        file.WriteFileAppend(slangword,ListDefinition,"history.txt");
+    }
+
+    public void ResetHistory() throws IOException {
+        file.WriteFile(null,"history.txt");
+    }
+
 
     //chức năng 4
     public void AddNewSlangWord(String key, String value,String type) throws IOException {
-        List<String> newValue = Arrays.asList(value.substring(value.indexOf('`') + 1,
-                value.length()).split("\\| "));
-        if(type == "Confirm" || type == "duplicate"){
+        List<String> newValue = Arrays.asList(value.split("\\| "));
+        if(type == "Confirm"){
             sw.put(key, newValue);
+        } else if (type == "duplicate") {
+            List<String> definition = SearchBySlangWord(key);
+            String oldDefiniton = String.join(" | ", definition);
+            oldDefiniton += " | " + value;
+            definition = Arrays.asList(oldDefiniton.split("\\| "));
+            sw.replace(key,definition);
         } else if (type == "overwrite") {
             sw.replace(key, newValue);
         }
         file.WriteFile(sw,"mySlang.txt");
-        file.WriteFile(sw,"mySlang.txt");
-
     }
 
     //chức năng 5
-    public int EditSlangWord(String key, String value) {
+    public void EditSlangWord(String key, String value) throws IOException {
         if (this.SearchBySlangWord(key) != null) {
             List<String> newValue = Arrays.asList(value.substring(value.indexOf('`') + 1,
                     value.length()).split("\\| "));
             sw.replace(key, newValue);
-            return 1;
-        } else return 0;
+            file.WriteFile(sw,"mySlang.txt");
+        }
     }
 
     //chức năng 6
-    public int DeleteSlangWord(String key) {
+    public int DeleteSlangWord(String key) throws IOException {
         if (this.SearchBySlangWord(key) != null) {
             sw.remove(key);
+            file.WriteFile(sw,"mySlang.txt");
             return 1;
         } else return 0;
     }

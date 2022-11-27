@@ -20,7 +20,7 @@ public class File {
             List<String> value = new ArrayList<>();
             while (line != null) {
                 line = reader.readLine();
-                if(line.indexOf('`') == -1) {
+                if (line.indexOf('`') == -1) {
                     line = reader.readLine();
                 }
                 key = line.substring(0, line.indexOf('`'));
@@ -45,11 +45,12 @@ public class File {
         try {
             fileOutputStream = new FileOutputStream(filename);
             writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
-
-            for (String slangword : sw.keySet()) {
-                String definition = String.join("| ", sw.get(slangword));
-                String line = slangword + "`" + definition + "\n";
-                writer.write(line);
+            if(sw!=null) {
+                for (String slangword : sw.keySet()) {
+                    String definition = String.join("| ", sw.get(slangword));
+                    String line = slangword + "`" + definition + "\n";
+                    writer.write(line);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,19 +60,18 @@ public class File {
         }
     }
 
-    public void WriteFileAppend(HashMap<String, List<String>> sw, String filename) throws IOException {
+    public void WriteFileAppend(String slangword, List<String> listDefinition, String filename) throws IOException {
         FileOutputStream fileOutputStream = null;
         BufferedWriter writer = null;
 
         try {
-            fileOutputStream = new FileOutputStream(filename,true);
+            fileOutputStream = new FileOutputStream(filename, true);
             writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
 
-            for (String slangword : sw.keySet()) {
-                String definition = String.join("| ", sw.get(slangword));
-                String line = slangword + "`" + definition + "\n";
-                writer.write(line);
-            }
+            String definition = String.join("| ", listDefinition);
+            String line = slangword + "`" + definition + "\n";
+            writer.write(line);
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

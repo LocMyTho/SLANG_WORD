@@ -87,7 +87,6 @@ MEATHEAD`Muscular, but dumb person
 CEEB`CBB
 STR8`Straight
 C&C`Command and Conquer (game)
-a`aa
 BEF`Best Enemies Forever| Best Email Friend
 ICWUDT`I See What You Did There
 BEH`disinterest| IDC
@@ -184,6 +183,7 @@ BIS`Best In Slot
 SKI`Spend Kids' Inheritance| Snort cocaine
 TWYL`Talk With You Later
 BIZ`Business
+ô`Trademark
 SKL`School
 DYLM`Do You Love/Like Me?
 SKO`Let's Go
@@ -362,6 +362,7 @@ BSB`Backstreet Boys
 STR`Strength| Short Term Relationship
 BSA`Boy Scouts of America
 BSC`Bachelor of Science
+C4C`Comment for Comment
 STS`Smirk To Self
 TI AMO`I Love You
 BSF`But Seriously Folks
@@ -1442,6 +1443,7 @@ EM`E-Mail| Them
 EP`Extended Play
 F1`Formula One
 EQ`EverQuest (game)
+ER`Emergency Room
 DAMAGE`Cost of something
 DILLIC`Does It Look Like I Care
 ET`Extra Terrestrial
@@ -4422,6 +4424,7 @@ TE AMO`I love you (Spanish)
 ELBOW`A pound of marijuana
 (S)`Seriously
 SLAN`Goodbye
+HOODIE`Hooded sweatshirt
 LUWAMH`Love You with All My Heart
 WAFWOT`What A F***ing Waste Of Time
 JUZ`Just
@@ -6190,6 +6193,7 @@ BOMM`BOOMM
 DURS`Damn, You Are Sexy
 P2W`Pay To Win
 BFFLE`Best Friends For Like Ever
+BOMB`Something really bad
 KIFF`Cool
 CAPO`Captain| Mafia boss
 ICBI`I Can't Believe It
@@ -7276,6 +7280,7 @@ S/O`Shout Out| Significant Other
 TROLLING`The act of being a TROLL
 S/N`Serial Number
 .GOV`governments
+AMA`Ask Me Anything
 BTBAM`Between The Buried And Me (band)
 AMC`American Motors Corportation
 RNR`Rock 'N Roll
