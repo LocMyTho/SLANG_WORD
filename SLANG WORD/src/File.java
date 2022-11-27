@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class File {
-    public HashMap<String, List<String>> readFile(String filename) throws IOException {
+    public HashMap<String, String> readFile(String filename) throws IOException {
         FileInputStream fileInputStream = null;
         BufferedReader reader = null;
-        HashMap<String, List<String>> sw = new HashMap<String, List<String>>();
+        HashMap<String, String> sw = new HashMap<String, String>();
 
 
         try {
@@ -17,16 +17,15 @@ public class File {
 
             String line = "";
             String key = "";
-            List<String> value = new ArrayList<>();
+            String value = "";
             while (line != null) {
                 line = reader.readLine();
                 if (line.indexOf('`') == -1) {
                     line = reader.readLine();
                 }
                 key = line.substring(0, line.indexOf('`'));
-                value = Arrays.asList(line.substring(line.indexOf('`') + 1, line.length()).split("\\| "));
+                value = line.substring(line.indexOf('`') + 1, line.length());
                 sw.put(key, value);
-
 
             }
         } catch (IOException e) {
@@ -38,16 +37,18 @@ public class File {
         }
     }
 
-    public void WriteFile(HashMap<String, List<String>> sw, String filename) throws IOException {
+    public void WriteFile(HashMap<String, String> sw, String filename) throws IOException {
         FileOutputStream fileOutputStream = null;
         BufferedWriter writer = null;
 
         try {
-            fileOutputStream = new FileOutputStream(filename);
+            if (filename == "history.txt" && sw!= null)
+                fileOutputStream = new FileOutputStream(filename, true);
+            else fileOutputStream = new FileOutputStream(filename);
             writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
-            if(sw!=null) {
+            if (sw != null) {
                 for (String slangword : sw.keySet()) {
-                    String definition = String.join("| ", sw.get(slangword));
+                    String definition = sw.get(slangword);
                     String line = slangword + "`" + definition + "\n";
                     writer.write(line);
                 }
@@ -60,24 +61,23 @@ public class File {
         }
     }
 
-    public void WriteFileAppend(String slangword, List<String> listDefinition, String filename) throws IOException {
-        FileOutputStream fileOutputStream = null;
-        BufferedWriter writer = null;
-
-        try {
-            fileOutputStream = new FileOutputStream(filename, true);
-            writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
-
-            String definition = String.join("| ", listDefinition);
-            String line = slangword + "`" + definition + "\n";
-            writer.write(line);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            writer.close();
-            fileOutputStream.close();
-        }
-    }
+//    public void WriteFileAppend(String slangword, String definition, String filename) throws IOException {
+//        FileOutputStream fileOutputStream = null;
+//        BufferedWriter writer = null;
+//
+//        try {
+//            fileOutputStream = new FileOutputStream(filename, true);
+//            writer = new BufferedWriter(new OutputStreamWriter(fileOutputStream));
+//
+//            String line = slangword + "`" + definition + "\n";
+//            writer.write(line);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            writer.close();
+//            fileOutputStream.close();
+//        }
+//    }
 
 }

@@ -2,12 +2,15 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 public class Controller implements ActionListener {
     private View view;
     private slangWord sw;
+    private List<String> QA;
 
     public Controller(View view) throws IOException {
         this.view = view;
@@ -29,10 +32,10 @@ public class Controller implements ActionListener {
             view.view();
             view.model.setNumRows(0);
             try {
-                HashMap<String, List<String>> listSlangword = sw.History();
+                HashMap<String, String> listSlangword = sw.History();
                 if (listSlangword != null) {
                     for (String slangword : listSlangword.keySet()) {
-                        String definition = String.join(" | ", listSlangword.get(slangword));
+                        String definition = listSlangword.get(slangword);
                         view.model.addRow(new Object[]{slangword, definition});
                     }
                 }
@@ -76,29 +79,32 @@ public class Controller implements ActionListener {
             view.Question();
         } else if (e.getSource() == view.btn_search) {
             String text_value = view.text_slangword.getText();
+            if(checkFlank(text_value,text_value)) return;
             view.model.setNumRows(0);
+            HashMap<String, String> history = new HashMap<String, String>();
             switch (view.screen) {
                 case searchByDefinition -> {
-                    HashMap<String, List<String>> listSlangword = sw.SearchByDefinition(text_value);
+                    HashMap<String, String> listSlangword = sw.SearchByDefinition(text_value);
                     if (listSlangword != null) {
                         for (String slangword : listSlangword.keySet()) {
-                            text_value = String.join(" | ", listSlangword.get(slangword));
-                            view.model.addRow(new Object[]{slangword, text_value});
-                            try {
-                                sw.SaveHistory(slangword, listSlangword.get(slangword));
-                            } catch (IOException ex) {
-                                throw new RuntimeException(ex);
-                            }
+                            String definition = listSlangword.get(slangword);
+                            view.model.addRow(new Object[]{slangword, definition});
+                            history.put(slangword, definition);
                         }
                     }
+                    try {
+                        sw.file.WriteFile(history, "history.txt");
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
-                case add,edit,delete,searchBySlangword ->{
-                    List<String> listDefinition = sw.SearchBySlangWord(text_value);
-                    if (listDefinition != null) {
-                        String definition = String.join(" | ", listDefinition);
+                case add, edit, delete, searchBySlangword -> {
+                    String definition = sw.SearchBySlangWord(text_value);
+                    if (definition != null) {
                         view.model.addRow(new Object[]{text_value, definition});
+                        history.put(text_value, definition);
                         try {
-                            sw.SaveHistory(text_value, listDefinition);
+                            sw.SaveHistory(history);
                         } catch (IOException ex) {
                             throw new RuntimeException(ex);
                         }
@@ -106,9 +112,15 @@ public class Controller implements ActionListener {
                 }
             }
         } else if (e.getSource() == view.btn_input) {
-            String slangword = view.text_slangword.getText();
-            String definition = view.text_definition.getText();
-            view.model.setNumRows(0);
+            String slangword = "";
+            String definition = "";
+            switch (view.screen) {
+                case add, edit, delete, random, history -> {
+                    slangword = view.text_slangword.getText();
+                    definition = view.text_definition.getText();
+                    view.model.setNumRows(0);
+                }
+            }
             switch (view.screen) {
                 case history -> {
                     try {
@@ -118,6 +130,7 @@ public class Controller implements ActionListener {
                     }
                 }
                 case add -> {
+                    if(checkFlank(slangword,definition)) return;
                     int check = 0;
                     for (String i : sw.sw.keySet()) {
                         if (slangword.compareTo(i) == 0) {
@@ -164,6 +177,7 @@ public class Controller implements ActionListener {
                     }
                 }
                 case edit -> {
+                    if(checkFlank(slangword,definition)) return;
                     try {
                         sw.EditSlangWord(slangword, definition);
                     } catch (IOException ex) {
@@ -171,6 +185,7 @@ public class Controller implements ActionListener {
                     }
                 }
                 case delete -> {
+                    if(checkFlank(slangword,slangword)) return;
                     Object[] options = {"Confirm", "No"};
                     int n = JOptionPane.showOptionDialog(view,
                             "Do you want to delete this slang word",
@@ -190,17 +205,97 @@ public class Controller implements ActionListener {
                 }
                 case random -> {
                     slangword = sw.RandomSlangWord();
-                    definition = String.join(" | ", sw.SearchBySlangWord(slangword));
+                    definition = sw.SearchBySlangWord(slangword);
                     view.model.addRow(new Object[]{slangword, definition});
                 }
                 case questionSW -> {
+                    QA = sw.QuestionSlangword();
 
-                } case questionDE -> {
+                    view.label_slangword.setText("What is the definition of \'" + QA.get(0) + "\'");
+                    Random random = new Random();
+                    List<Integer> list = new ArrayList<Integer>();
+                    list.add(1);
+                    list.add(2);
+                    list.add(3);
+                    list.add(4);
+                    int idx;
+                    int i = 0;
+                    while (i < 4) {
+                        idx = random.nextInt(list.size());
+                        if (i == 0) view.btn_a.setText(QA.get(list.get(idx)));
+                        else if (i == 1) view.btn_b.setText(QA.get(list.get(idx)));
+                        else if (i == 2) view.btn_c.setText(QA.get(list.get(idx)));
+                        else if (i == 3) view.btn_d.setText(QA.get(list.get(idx)));
+                        list.remove(idx);
+                        i++;
+                    }
+                }
+                case questionDE -> {
+                    QA = sw.QuestionDefinition();
 
+                    view.label_slangword.setText("What is the slang word of \'" + QA.get(0) + "\'");
+                    Random random = new Random();
+                    List<Integer> list = new ArrayList<Integer>();
+                    list.add(1);
+                    list.add(2);
+                    list.add(3);
+                    list.add(4);
+                    int idx;
+                    int i = 0;
+                    while (i < 4) {
+                        idx = random.nextInt(list.size());
+                        if (i == 0) view.btn_a.setText(QA.get(list.get(idx)));
+                        else if (i == 1) view.btn_b.setText(QA.get(list.get(idx)));
+                        else if (i == 2) view.btn_c.setText(QA.get(list.get(idx)));
+                        else if (i == 3) view.btn_d.setText(QA.get(list.get(idx)));
+                        list.remove(idx);
+                        i++;
+                    }
                 }
             }
         } else if (e.getSource() == view.btn_a) {
-
+            QAMessage(view.btn_a.getText());
+        } else if (e.getSource() == view.btn_b) {
+            QAMessage(view.btn_b.getText());
+        } else if (e.getSource() == view.btn_c) {
+            QAMessage(view.btn_c.getText());
+        } else if (e.getSource() == view.btn_d) {
+            QAMessage(view.btn_d.getText());
         }
+    }
+
+    private void QAMessage(String Answer) {
+        String Question = QA.get(0);
+        String message = "Your answer is wrong!!!";
+        String title = "WRONG";
+        switch (view.screen) {
+            case questionSW -> {
+                if (Answer == sw.SearchBySlangWord(Question)) {
+                    message = "Congratulations,Your answer is correct!!!";
+                    title = "CORRECT";
+                }
+            }
+            case questionDE -> {
+                if (Question == sw.SearchBySlangWord(Answer)) {
+                    message = "Congratulations,Your answer is correct!!!";
+                    title = "CORRECT";
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(view,
+                message,
+                title,
+                JOptionPane.PLAIN_MESSAGE);
+    }
+
+    private boolean checkFlank(String slangword,String definition){
+        if (slangword.compareTo("") == 0|| definition.compareTo("") == 0){
+            JOptionPane.showMessageDialog(view,
+                    "Please fill slang word or definition to add",
+                    "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+            return true;
+        }
+        return false;
     }
 }

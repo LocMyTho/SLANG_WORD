@@ -1,79 +1,65 @@
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class slangWord {
-    public HashMap<String, List<String>> sw = new HashMap<String, List<String>>();
-    private File file = new File();
+    public HashMap<String, String> sw = new HashMap<String, String>();
+    public File file = new File();
 
     slangWord() throws IOException {
         sw = file.readFile("mySlang.txt");
     }
 
     //chức năng 1
-    public List<String> SearchBySlangWord(String key) {
+    public String SearchBySlangWord(String key) {
         return sw.get(key);
     }
 
     //chức năng 2
-    public HashMap<String, List<String>> SearchByDefinition(String value) {
-        Pattern pattern = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = null;
-        boolean matchFound = true;
-        HashMap<String, List<String>> result = new HashMap<String, List<String>>();
+    public HashMap<String, String> SearchByDefinition(String value) {
+        HashMap<String, String> result = new HashMap<String, String>();
         for (String i : sw.keySet()) {
-            for (String j : sw.get(i)) {
-                matcher = pattern.matcher(j);
-                matchFound = matcher.find();
-                if (matchFound) {
-                    result.put(i,sw.get(i));
-                }
+            if (sw.get(i).matches("(.*)" + value + "(.*)")) {
+                result.put(i, sw.get(i));
             }
-
         }
         return result;
     }
 
     //chức năng 3
 
-    public HashMap<String, List<String>> History() throws IOException {
+    public HashMap<String, String> History() throws IOException {
         return file.readFile("history.txt");
     }
 
-    public void SaveHistory(String slangword,List<String> ListDefinition) throws IOException {
-        file.WriteFileAppend(slangword,ListDefinition,"history.txt");
+    public void SaveHistory(HashMap<String, String> history) throws IOException {
+        file.WriteFile(history, "history.txt");
     }
 
     public void ResetHistory() throws IOException {
-        file.WriteFile(null,"history.txt");
+        file.WriteFile(null, "history.txt");
     }
 
 
     //chức năng 4
-    public void AddNewSlangWord(String key, String value,String type) throws IOException {
-        List<String> newValue = Arrays.asList(value.split("\\| "));
-        if(type == "Confirm"){
-            sw.put(key, newValue);
+    public void AddNewSlangWord(String key, String value, String type) throws IOException {
+
+        if (type == "Confirm") {
+            sw.put(key, value);
         } else if (type == "duplicate") {
-            List<String> definition = SearchBySlangWord(key);
-            String oldDefiniton = String.join(" | ", definition);
-            oldDefiniton += " | " + value;
-            definition = Arrays.asList(oldDefiniton.split("\\| "));
-            sw.replace(key,definition);
+            String definition = SearchBySlangWord(key);
+            definition += "| " + value;
+            sw.replace(key, definition);
         } else if (type == "overwrite") {
-            sw.replace(key, newValue);
+            sw.replace(key, value);
         }
-        file.WriteFile(sw,"mySlang.txt");
+        file.WriteFile(sw, "mySlang.txt");
     }
 
     //chức năng 5
     public void EditSlangWord(String key, String value) throws IOException {
         if (this.SearchBySlangWord(key) != null) {
-            List<String> newValue = Arrays.asList(value.substring(value.indexOf('`') + 1,
-                    value.length()).split("\\| "));
-            sw.replace(key, newValue);
-            file.WriteFile(sw,"mySlang.txt");
+            sw.replace(key, value);
+            file.WriteFile(sw, "mySlang.txt");
         }
     }
 
@@ -81,7 +67,7 @@ public class slangWord {
     public int DeleteSlangWord(String key) throws IOException {
         if (this.SearchBySlangWord(key) != null) {
             sw.remove(key);
-            file.WriteFile(sw,"mySlang.txt");
+            file.WriteFile(sw, "mySlang.txt");
             return 1;
         } else return 0;
     }
@@ -100,12 +86,54 @@ public class slangWord {
     }
 
     //  chức năng 9
-    public List<String> RandomDefinition() {
-        List<List<String>> valueList = new ArrayList<List<String>>(sw.values());
+    public String RandomDefinition() {
+        List<String> valueList = new ArrayList<>(sw.values());
         int randomIndex = new Random().nextInt(valueList.size());
-        List<String> randomValue = valueList.get(randomIndex);
+        String randomValue = valueList.get(randomIndex);
         return randomValue;
     }
 
+    public List<String> QuestionSlangword() {
+        List<String> QA = new ArrayList<String>();
+        String slangword = RandomSlangWord();
+        String definition = SearchBySlangWord(slangword);
+
+        QA.add(slangword);
+        QA.add(definition);
+        int check;
+        while (QA.size() < 5) {
+            definition = RandomDefinition();
+            check = 0;
+            for (String i : QA) {
+                if (i.compareTo(definition) == 0) {
+                    check++;
+                }
+            }
+            if (check == 0) QA.add(definition);
+        }
+        return QA;
+    }
+
+    // chức năng 10
+    public List<String> QuestionDefinition() {
+        List<String> QA = new ArrayList<String>();
+        String slangword = RandomSlangWord();
+        String definition = SearchBySlangWord(slangword);
+
+        QA.add(definition);
+        QA.add(slangword);
+        int check;
+        while (QA.size() < 5) {
+            slangword = RandomSlangWord();
+            check = 0;
+            for (String i : QA) {
+                if (i.compareTo(slangword) == 0) {
+                    check++;
+                }
+            }
+            if (check == 0) QA.add(slangword);
+        }
+        return QA;
+    }
 
 }
